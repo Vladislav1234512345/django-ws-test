@@ -32,14 +32,17 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'daphne',
+    'main',
     'user',
     'chat',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.postgres',
 ]
 
 MIDDLEWARE = [
@@ -143,4 +146,19 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+# Указание пути к новой модели пользователя "User"
+AUTH_USER_MODEL = 'user.User'
+
+# Указание пути к логину при указании декоратора "@login_required" контроллера
+LOGIN_URL = '/user/login/'
+
+# Время жизни куков сессии
+SESSION_COOKIE_AGE = 60 * 60 * 24
+
+#
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+
+
 

@@ -2,7 +2,7 @@
 
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
-    <form method="PUT" action="{% url 'user:profile' %}">
+    <form method="POST" action="{% url 'user:profile' %}">
         {% csrf_token %}
         <input type="text" name="first_name" id="id_first_name" placeholder="Введите имя..." required
                value="{% if user.first_name %}{{ user.first_name }}{% endif %}">
@@ -12,7 +12,7 @@
                value="{% if user.email %}{{ user.email }}{% endif %}">
         <input type="text" name="username" id="id_username" placeholder="Введите имя пользователя..." required
                value="{% if user.username %}{{ user.username }}{% endif %}">
-        <input type="text" name="password" id="id_password" placeholder="Введите пароль..." required
+        <input type="password" name="password" id="id_password" placeholder="Введите пароль..." required
                value="{% if user.password %}{{ user.password }}{% endif %}">
         <button type="submit">Сохранить</button>
     </form>

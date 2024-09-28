@@ -16,11 +16,11 @@ def login(request):
             password = request.POST["password"]
             user = auth.authenticate(username=username, password=password)
             if user:
-                user.login(request, user)
+                auth.login(request, user)
                 if request.POST.get("next"):
                     return HttpResponseRedirect(request.POST.get("next"))
 
-                return HttpResponseRedirect(reverse('user:profile'))
+                return HttpResponseRedirect(reverse('main:index'))
 
     form = UserLoginForm()
 
@@ -39,7 +39,7 @@ def register(request):
             form.save()
             user = form.instance
             auth.login(request, user)
-            return HttpResponseRedirect(reverse('user:profile'))
+            return HttpResponseRedirect(reverse('main:index'))
 
     form = UserRegistrationForm()
 
@@ -52,8 +52,8 @@ def register(request):
 
 @login_required
 def profile(request):
-    if request.method == 'PUT':
-        form = UserUpdateForm(instance=request.user, data=request.PUT)
+    if request.method == 'POST':
+        form = UserUpdateForm(instance=request.user, data=request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('user:profile'))
