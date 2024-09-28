@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+    <form method="POST" action="{% url 'user:register' %}">
+        {% csrf_token %}
+        <input type="text" name="first_name" id="id_first_name" placeholder="Введите имя..." required>
+        <input type="text" name="last_name" id="id_last_name" placeholder="Введите фамилию..." required>
+        <input type="email" name="email" id="id_email" placeholder="Введите электронную почту..." required>
+        <input type="text" name="username" id="id_username" placeholder="Введите имя пользователя..." required>
+        <input type="password" name="password1" id="id_password1" placeholder="Введите пароль..." required>
+        <input type="password" name="password2" id="id_password2" placeholder="Подтвердите пароль..." required>
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+{% endblock %}

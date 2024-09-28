@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+
+<h1>
+{% if user.is_authenticated %}
+    {{ user.username }}
+{% else %}
+    Неизвестный гость
+{% endif %}
+</h1>
+{% block content %}
+{% endblock %}
+</body>
+</html>
