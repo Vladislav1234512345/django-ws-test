@@ -20,7 +20,7 @@ def login(request):
                 if request.POST.get("next"):
                     return HttpResponseRedirect(request.POST.get("next"))
 
-                return HttpResponseRedirect(reverse('main:index'))
+                return HttpResponseRedirect(reverse('chat:index'))
 
     form = UserLoginForm()
 
@@ -39,7 +39,7 @@ def register(request):
             form.save()
             user = form.instance
             auth.login(request, user)
-            return HttpResponseRedirect(reverse('main:index'))
+            return HttpResponseRedirect(reverse('chat:index'))
 
     form = UserRegistrationForm()
 

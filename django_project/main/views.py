@@ -1,10 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 
 # Create your views here.
 def index(request):
 
-    context = {
-        'title': 'Главная',
-    }
-
-    return render(request, 'main/index.html', context=context)
+    return redirect(reverse('chat:index'))
