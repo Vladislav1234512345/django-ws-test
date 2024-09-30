@@ -6,9 +6,12 @@ services:
       context: ../django-ws-test/django_project  # Указываем путь к директории с Dockerfile относительно расположения docker-compose.yml
       dockerfile: Dockerfile
     image: django_server  # Имя образа вашего Django проекта
-    command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - .:/usr/src/app
+    command: >
+      sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+      volumes:
+      - ./django_project:/usr/src/app
+      - django_static_volume:/usr/src/app/static
+      - django_media_volume:/usr/src/app/media
     ports:
       - "8000:8000"
     environment:

@@ -1,6 +1,9 @@
 # Используем базовый образ Python
 FROM python:3.11-alpine
 
+# Устанавливаем postgresql-client через apk
+RUN apk update && apk add --no-cache postgresql-client
+
 # Установка зависимостей для PostgreSQL и других пакетов
 RUN apk add --no-cache postgresql-dev gcc musl-dev libffi-dev
 
@@ -20,6 +23,7 @@ RUN pip install --upgrade pip
 # Скопируем файл с зависимостями и установим их
 COPY ./requirements.txt ./
 RUN pip install -r requirements.txt --verbose
+
 
 # Скопируем оставшиеся файлы проекта
 COPY . .
