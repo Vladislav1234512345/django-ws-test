@@ -5,13 +5,13 @@ from user.models import User
 # Create your models here.
 
 class ChatUsers(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
     chat = models.ForeignKey('Chat', on_delete=models.CASCADE)
     date_joined = models.DateTimeField(auto_now_add=True)
     invite_reason = models.CharField(max_length=255)
 
     class Meta:
-        db_table = 'chat_users'
+        db_table = 'chats_users'
         verbose_name = 'Пользователь чата'
         verbose_name_plural = 'Пользователи чата'
 
@@ -26,7 +26,7 @@ class Chat(models.Model):
         return self.name
 
     class Meta:
-        db_table = 'chat'
+        db_table = 'chats'
         verbose_name = 'Чат'
         verbose_name_plural = 'Чаты'
 

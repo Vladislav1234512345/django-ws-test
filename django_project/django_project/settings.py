@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'main',
     'user',
     'chat',
+    'form',
 
     'django.contrib.admin',
     'django.contrib.auth',

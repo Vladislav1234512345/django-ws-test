@@ -3,16 +3,25 @@
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
     {% if user.is_authenticated %}
-        {% for user in users %}
-            <div>
-                <form action="{% url 'chat:index' %}" method="POST">
-                {% csrf_token %}
-                    <input type="hidden" name="user_id" value="{{ user.id }}">
-                    <button type="submit">{{ user.username }}</button>
-                <br>
-                </form>
-            </div>
-        {% endfor %}
+        <div>
+            {% for worksheet in worksheets %}
+                <div>
+                    <form action="{% url 'chat:index' %}" method="POST">
+                    {% csrf_token %}
+                        <input type="hidden" name="user_id" value="{{ worksheet.user.id }}">
+                        <button type="submit">{{ worksheet.user.username }}</button>
+                    <br>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+        <div>
+            {% for chat in chats %}
+                <div>
+                    <a href="{% url 'chat:room' chat.id %}">Чат №{{ chat.id }}</a>
+                </div>
+            {% endfor %}
+        </div>
     {% else %}
         <a href="{% url 'user:login' %}">Сначала авторизуйся</a>
     {% endif %}

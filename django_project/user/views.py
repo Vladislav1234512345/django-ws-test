@@ -6,6 +6,8 @@ from django.urls import reverse
 
 from .forms import UserLoginForm, UserUpdateForm, UserRegistrationForm
 
+from form.models import Worksheet
+
 # Create your views here.
 
 def login(request):
@@ -39,6 +41,9 @@ def register(request):
             form.save()
             user = form.instance
             auth.login(request, user)
+            worksheet = Worksheet(user=user)
+            worksheet.save()
+
             return HttpResponseRedirect(reverse('chat:index'))
 
     form = UserRegistrationForm()
