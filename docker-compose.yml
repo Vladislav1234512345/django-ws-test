@@ -3,16 +3,13 @@ version: '3.8'
 services:
   web:
     build:
-      context: ../django-ws-test/django_project  # Указываем путь к директории с Dockerfile относительно расположения docker-compose.yml
+      context: ../django-ws-test/django_project
       dockerfile: Dockerfile
-    image: django_server  # Имя образа вашего Django проекта
+    image: django_server
     command: >
-      sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
-      volumes:
-       - .:/app
-      #      - ./django_project:/usr/src/app
-      #      - django_static_volume:/usr/src/app/static
-      #      - django_media_volume:/usr/src/app/media
+      sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
     ports:
       - "8000:8000"
     environment:
@@ -48,4 +45,5 @@ services:
 
 volumes:
   postgres_data:
+    external: true
   redis_data:

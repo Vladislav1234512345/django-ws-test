@@ -47,7 +47,17 @@ def index(request):
                 if new_like_created:
                     new_like.save()
 
-            return HttpResponse('')
+            worksheets = Worksheet.objects.exclude(pk=this_worksheet.id)
+
+            chats = user.chats.all()
+
+            context = {
+                'worksheets': worksheets,
+                'chats': chats,
+                'title': 'Чаты',
+            }
+
+            return render(request, 'chat/index.html', context=context)
 
     else:
 
@@ -76,8 +86,11 @@ def room(request, chat_id):
     if not request.user in users:
         return redirect('chat:index')
 
+    messages = chat.messages.all()
+
     context = {
         "chat_id": chat_id,
+        "messages": messages,
     }
 
     return render(request, "chat/room.html", context=context)

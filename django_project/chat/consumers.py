@@ -1,7 +1,11 @@
 # chat/consumers.py
 import json
 
+from channels.db import database_sync_to_async
+
 from channels.generic.websocket import AsyncWebsocketConsumer
+
+from .models import Chat, Message
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -21,11 +25,24 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message = text_data_json["message"]
+        text = text_data_json["message"]
+
+        # получить отправителя
+        user = self.scope["user"]
+
+        # Получение чата по id
+        chat = await database_sync_to_async(Chat.objects.get)(pk=self.chat_id)
+
+        # создание экземпляра сообщения
+        message = await database_sync_to_async(Message.objects.create)(
+            chat=chat,
+            sender=user,
+            text=text,
+        )
 
         # Send message to room group
         await self.channel_layer.group_send(
-            self.room_group_name, {"type": "chat.message", "message": message}
+            self.room_group_name, {"type": "chat.message", "message": text}
         )
 
     # Receive message from room group

@@ -6,6 +6,17 @@
     <title>Chat Room</title>
 </head>
 <body>
+    <div>
+        {% for message in messages %}
+            <div>
+                <div class="{% if message.sender == user %}text-right{% else %}text-left{% endif %}">
+                    <p>{{ message.sender.username }}</p>
+                    <h6>{{ message.text }}</h6>
+                    <h6>{{ message.date }} - {{ message.time }}</h6>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
     <textarea id="chat-log" cols="100" rows="20"></textarea><br>
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">

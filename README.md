@@ -9,6 +9,9 @@ docker exec -it django-ws-test-web-1 /bin/sh
 3. После входа в корневую папку контейнера, создадим супер-пользователя:
 python manage.py createsuperuser
 
+4. Вход в сервисы контейнера:
+docker-compose exec service_name sh
+
 
 
 **Инструкция по запуску django проекта с использованием websockets (Windows)**

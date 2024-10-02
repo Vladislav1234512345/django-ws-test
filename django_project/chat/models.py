@@ -5,7 +5,7 @@ from user.models import User
 # Create your models here.
 
 class ChatUsers(models.Model):
-    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     chat = models.ForeignKey('Chat', on_delete=models.CASCADE)
     date_joined = models.DateTimeField(auto_now_add=True)
     invite_reason = models.CharField(max_length=255)
@@ -31,4 +31,9 @@ class Chat(models.Model):
         verbose_name_plural = 'Чаты'
 
 
-
+class Message(models.Model):
+    chat = models.ForeignKey('Chat', on_delete=models.CASCADE, related_name="messages")
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    time = models.TimeField(auto_now_add=True)
+    text = models.TextField(max_length=5000)
