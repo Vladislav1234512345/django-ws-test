@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django.utils import timezone
 
 from django.shortcuts import render, redirect, reverse, get_object_or_404
@@ -6,11 +5,45 @@ from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from user.models import User
 from form.models import Worksheet, Like
-from .models import Chat, ChatUsers
+from .models import Chat, ChatUsers, Message
 
 # Create your views here.
 @login_required
 def index(request):
+
+    def get_data(worksheet, user):
+        worksheets = Worksheet.objects.exclude(pk=worksheet.id)
+
+        # chat__in позволяет отфилтровать все экземпляры модели ChatUsers по полю chat,
+        # то есть все экземпляры Chat вернут все совпадения с экземлярами ChatUsers
+        # а также происходит фильтрацию по полю user, тобишь ищет записи с данным пользователем
+        chats = ChatUsers.objects.filter(chat__in=user.chats.all(), user=user)
+
+        chats_list: list = []
+        for chat in chats:
+            # datetime_gt проверяет больше ли поле datetime поля last_seen, если да, возвращает True
+            messages = Message.objects.filter(chat=chat.chat, datetime__gt=chat.last_seen)
+
+            #получение первого элемента по убыванию datetime
+            last_message = messages.order_by('datetime').last()
+
+            chat_dict = {
+                'chat': chat,
+                'messages_length': len(messages),
+                'last_message': last_message,
+            }
+
+            chats_list.append(chat_dict)
+
+        context = {
+            'worksheets': worksheets,
+            'chats_list': chats_list,
+            'title': 'Чаты',
+        }
+
+        return context
+
+
     this_worksheet, this_worksheet_created = Worksheet.objects.get_or_create(user=request.user)
     user = request.user
 
@@ -47,29 +80,13 @@ def index(request):
                 if new_like_created:
                     new_like.save()
 
-            worksheets = Worksheet.objects.exclude(pk=this_worksheet.id)
-
-            chats = user.chats.all()
-
-            context = {
-                'worksheets': worksheets,
-                'chats': chats,
-                'title': 'Чаты',
-            }
+            context = get_data(this_worksheet, user)
 
             return render(request, 'chat/index.html', context=context)
 
     else:
 
-        worksheets = Worksheet.objects.exclude(pk=this_worksheet.id)
-
-        chats = user.chats.all()
-
-        context = {
-            'worksheets': worksheets,
-            'chats': chats,
-            'title': 'Чаты',
-        }
+        context = get_data(this_worksheet, user)
 
         return render(request, 'chat/index.html', context=context)
 

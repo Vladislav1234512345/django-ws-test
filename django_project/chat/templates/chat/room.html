@@ -12,7 +12,7 @@
                 <div class="{% if message.sender == user %}text-right{% else %}text-left{% endif %}">
                     <p>{{ message.sender.username }}</p>
                     <h6>{{ message.text }}</h6>
-                    <h6>{{ message.date }} - {{ message.time }}</h6>
+                    <h6>{{ message.datetime }}</h6>
                 </div>
             </div>
         {% endfor %}

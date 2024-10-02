@@ -16,9 +16,14 @@
             {% endfor %}
         </div>
         <div>
-            {% for chat in chats %}
+            {% for chat_element in chats_list %}
                 <div>
-                    <a href="{% url 'chat:room' chat.id %}">Чат №{{ chat.id }}</a>
+                    <a href="{% url 'chat:room' chat_element.chat.chat.id %}">Чат №{{ chat_element.chat.chat.id }}</a>
+                        <p>
+                            {% if chat_element.last_message.text %}
+                                {{ chat_element.messages_length }} - {{ chat_element.last_message.text }}
+                            {% endif %}
+                        </p>
                 </div>
             {% endfor %}
         </div>

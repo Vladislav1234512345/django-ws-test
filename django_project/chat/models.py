@@ -9,6 +9,7 @@ class ChatUsers(models.Model):
     chat = models.ForeignKey('Chat', on_delete=models.CASCADE)
     date_joined = models.DateTimeField(auto_now_add=True)
     invite_reason = models.CharField(max_length=255)
+    last_seen = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'chats_users'
@@ -34,6 +35,5 @@ class Chat(models.Model):
 class Message(models.Model):
     chat = models.ForeignKey('Chat', on_delete=models.CASCADE, related_name="messages")
     sender = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)
-    time = models.TimeField(auto_now_add=True)
+    datetime = models.DateTimeField(auto_now=True)
     text = models.TextField(max_length=5000)
